@@ -11,27 +11,18 @@ var AppView = Backbone.View.extend({
     this.videos.models[0].select();
   },
 
-
   render: function() {
     this.$el.html(this.template());
     this.$('.player').html(this.videoPlayer.render());
+    this.$('.list').html(this.videoList.render());
+    this.$('.btn').click((event) => {
+      event.preventDefault();
+      this.videos.search(this.$('.form-control').val());
+    });
 
-
-
-    new VideoPlayerView({
-      el: this.$('.player'),
-      collection: this.videos
-    }).render();
-
-    new VideoListView({
-      el: this.$('.list'),
-      collection: this.videos
-    }).render();
-
-    // this.videoPlayer = new VideoPlayerView();
-    // this.videoPlayer.render();
-    return this;
+    return this.$el;
   },
+
 
   template: templateURL('src/templates/app.html')
 
