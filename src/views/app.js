@@ -9,7 +9,6 @@ var AppView = Backbone.View.extend({
     this.videoList = new VideoListView({collection: this.videos});
     this.search = new SearchView({collection: this.videos});
     this.render();
-    this.videos.models[0].select();
   },
 
   render: function() {
@@ -26,7 +25,7 @@ var AppView = Backbone.View.extend({
     this.$('.btn').on('click', () => {
       sendQuery(self);
     });
-    sendQuery = function() {
+    sendQuery = () => {
       var query = $('.form-control').val();
       if (!query) {
         alert('Please enter a valid search');

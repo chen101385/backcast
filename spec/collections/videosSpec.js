@@ -29,7 +29,7 @@ describe ('VideosCollection', function() {
     it('should convert the fetched data into an array', function() {
       expect(collection.parse).to.be.a('function');
       var response = collection.parse({ items: fakeVideoData });
-      expect(response).to.be.equal(fakeVideoData);
+      expect(response.items).to.be.equal(fakeVideoData);
     });
 
   });
