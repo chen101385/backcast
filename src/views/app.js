@@ -2,24 +2,38 @@ var AppView = Backbone.View.extend({
 
   el: '#app',
 
-  initialize: function() {
+  initialize: function(data) {
     this.videos = new Videos();
-    this.videos.populateVideoList(window.exampleVideoData);
+    this.videos.populateVideoList(data || window.exampleVideoData);
     this.videoPlayer = new VideoPlayerView({collection: this.videos});
     this.videoList = new VideoListView({collection: this.videos});
+    this.search = new SearchView({collection: this.videos});
     this.render();
     this.videos.models[0].select();
   },
 
   render: function() {
+    var self = this;
     this.$el.html(this.template());
     this.$('.player').html(this.videoPlayer.render());
     this.$('.list').html(this.videoList.render());
-    this.$('.btn').click((event) => {
-      event.preventDefault();
-      this.videos.search(this.$('.form-control').val());
+    this.$('.search').html(this.search.render());
+    this.$('.form-control').on('keypress', e => {
+      if (e.which === 13) {
+        sendQuery(self);
+      }
     });
-
+    this.$('.btn').on('click', () => {
+      sendQuery(self);
+    });
+    sendQuery = function() {
+      var query = $('.form-control').val();
+      if (!query) {
+        alert('Please enter a valid search');
+      } else {
+        self.videos.search(query);
+      }
+    };
     return this.$el;
   },
 
